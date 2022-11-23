@@ -1,0 +1,19 @@
+.layout {
+  margin: 0 100px;
+}
+.header {
+  background-color: #161c51;
+  padding: 20px;
+  border-bottom-right-radius: 25px;
+  border-bottom-left-radius: 25px;
+}
+.logo {
+  font-size: 35px;
+  color: rgba(255, 255, 255, 0.716);
+  margin: 0 !important;
+  cursor: pointer;
+}
+.username {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.716);
+}
