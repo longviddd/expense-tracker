@@ -2,3 +2,13 @@
 body {
   font-family: "Montserrat", sans-serif !important;
 }
+body,
+html {
+  overflow: hidden;
+}
+.primary {
+  background-color: #161c51;
+  padding: 5px 20px;
+  color: white;
+  border: none;
+}
