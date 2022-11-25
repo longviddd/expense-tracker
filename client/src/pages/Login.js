@@ -1,11 +1,24 @@
 import React from "react";
-import { Form, Input } from "antd";
-import { Link } from "react-router-dom";
+import { Form, Input, message } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import "../resources/authentication.css";
+import axios from "axios";
 
 export default function Login() {
-  const onFinish = (values) => {
-    console.log(values);
+  const navigate = useNavigate();
+  const onFinish = async (values) => {
+    try {
+      const response = await axios.post("/api/users/login", values);
+      localStorage.setItem(
+        "currentUser",
+        JSON.stringify({ ...response.data, password: "" })
+      );
+      message.success("Login successful");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      message.error("Login failed.");
+    }
   };
   return (
     <div className="login">
