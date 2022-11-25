@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import "../resources/authentication.css";
@@ -8,6 +8,11 @@ import Spinner from "../components/Spinner";
 export default function Login() {
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
+  useEffect(() => {
+    if (localStorage.getItem("currentUser")) {
+      navigate("/");
+    }
+  }, []);
   const onFinish = async (values) => {
     try {
       setLoading(true);
