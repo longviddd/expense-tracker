@@ -6,7 +6,7 @@ import axios from "axios";
 import Spinner from "../components/Spinner";
 
 export default function Login() {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate();
   const onFinish = async (values) => {
     try {
@@ -26,7 +26,7 @@ export default function Login() {
   };
   return (
     <div className="login">
-      {loading && <Spinner />}
+      {isLoading && <Spinner />}
       <div className="row justify-content-center align-items-center w-100 h-100">
         <div className="col-md-4">
           <Form layout="vertical" onFinish={onFinish}>
