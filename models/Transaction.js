@@ -12,6 +12,10 @@ const transactionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  userId: {
+    type: String,
+    required: true,
+  },
   reference: { type: String },
   description: { type: String },
   date: { type: Date, required: true },
