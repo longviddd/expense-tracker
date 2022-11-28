@@ -1,62 +1,77 @@
-import { Form, Input, Modal, Select } from "antd";
-import React, { useState } from "react";
+import { Form, Input, message, Modal, Select, Table, Tag } from "antd";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import DefaultLayout from "../components/DefaultLayout";
+import Spinner from "../components/Spinner";
+import TransactionModal from "../components/TransactionModal";
 import "../resources/transactions.css";
 
 export default function Home() {
-  const [showModal, setShowModal] = useState(false);
+  const [transactionData, setTransactionData] = useState([]);
+  const [showTransactionModal, setShowTransactionModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+  const loadTableData = async (values) => {
+    try {
+      const response = await axios.get("/api/transactions/all", {
+        params: { userId: user._id },
+      });
+      console.log(typeof user._id);
+      setIsLoading(false);
+      setTransactionData(response.data);
+      console.log(transactionData);
+    } catch (error) {
+      message.error("Something went wrong");
+    }
+  };
+  useEffect(() => {
+    loadTableData();
+  }, []);
+  const columns = [
+    {
+      title: "Date",
+      dataIndex: "date",
+    },
+    {
+      title: "Amount",
+      dataIndex: "amount",
+    },
+    {
+      title: "category",
+      dataIndex: "category",
+    },
+    {
+      title: "Reference",
+      dataIndex: "reference",
+    },
+  ];
   return (
     <DefaultLayout>
+      {isLoading && <Spinner />}
       <div className="filter d-flex justify-content-between align-items-center">
         <div></div>
         <div>
-          <button className="primary" onClick={() => setShowModal(true)}>
+          <button
+            className="primary"
+            onClick={() => setShowTransactionModal(true)}
+          >
             ADD NEW
           </button>
         </div>
       </div>
-      <div className="table-analytics"></div>
-      <Modal
-        title="Add Transaction"
-        visible={showModal}
-        onCancel={() => setShowModal(false)}
-        footer={false}
-      >
-        <Form layout="vertical" className="transaction-form">
-          <Form.Item label="Amount" name="amount">
-            <Input type="text" />
-          </Form.Item>
-          <Form.Item label="Type" name="type">
-            <Select>
-              <Select.Option value="income">Income</Select.Option>
-              <Select.Option value="expense">Expense</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item label="Category" name="Category">
-            <Select>
-              <Select.Option value="salary">Salary</Select.Option>
-              <Select.Option value="freelance">Freelance</Select.Option>
-              <Select.Option value="food">Food</Select.Option>
-              <Select.Option value="entertainment">Entertainment</Select.Option>
-              <Select.Option value="education">Education</Select.Option>
-              <Select.Option value="medical">Medical</Select.Option>
-              <Select.Option value="tax">Tax</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item label="Amount" name="amount">
-            <Input type="date" />
-          </Form.Item>
-          <Form.Item label="Reference" name="reference">
-            <Input type="text" />
-          </Form.Item>
-          <Form.Item label="Description" name="description">
-            <Input type="text" />
-          </Form.Item>
-          <div className="d-flex justify-content-end">
-            <button className="primary">SAVE</button>
-          </div>
-        </Form>
-      </Modal>
+      <div className="table-analytics">
+        <div className="table">
+          <Table columns={columns} dataSource={transactionData} />
+        </div>
+      </div>
+      {showTransactionModal && (
+        <TransactionModal
+          showTransactionModal={showTransactionModal}
+          setShowTransactionModal={setShowTransactionModal}
+          loadTableData={loadTableData}
+        />
+      )}
     </DefaultLayout>
   );
 }
