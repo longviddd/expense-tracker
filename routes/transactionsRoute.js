@@ -15,8 +15,11 @@ router.post("/add", async function (req, res) {
 });
 router.get("/all", async function (req, res) {
   try {
-    const allTransactions = await Transaction.find();
-    res.send("All transactions retrieved");
+    const allTransactions = await Transaction.find({
+      userId: req.query["userId"],
+    });
+    console.log(req.body.userId);
+    res.send(allTransactions);
   } catch (error) {
     res.status(500).json(error);
   }

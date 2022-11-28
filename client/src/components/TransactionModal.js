@@ -1,7 +1,11 @@
 import { Form, Input, message, Modal, Select } from "antd";
 import React, { useState } from "react";
 import axios from "axios";
-function TransactionModal({ showTransactionModal, setShowTransactionModal }) {
+function TransactionModal({
+  showTransactionModal,
+  setShowTransactionModal,
+  loadTableData,
+}) {
   const [loading, setLoading] = useState(false);
   const onFinish = async (values) => {
     try {
@@ -12,6 +16,7 @@ function TransactionModal({ showTransactionModal, setShowTransactionModal }) {
         userId: user._id,
       });
       message.success("Transaction added");
+      loadTableData();
       setLoading(false);
     } catch (error) {
       console.log(error);
