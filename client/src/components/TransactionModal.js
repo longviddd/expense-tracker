@@ -18,8 +18,8 @@ function TransactionModal({
       message.success("Transaction added");
       loadTableData();
       setLoading(false);
+      setShowTransactionModal(false);
     } catch (error) {
-      console.log(error);
       message.error("Something went wrong");
       setLoading(false);
     }
