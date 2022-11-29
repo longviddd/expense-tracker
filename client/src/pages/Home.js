@@ -21,9 +21,11 @@ export default function Home() {
   const [transactionData, setTransactionData] = useState([]);
   const [showTransactionModal, setShowTransactionModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [frequency, setFrequency] = useState("");
+  const [frequency, setFrequency] = useState("7");
   const [selectedRange, setSelectedRange] = useState([]);
+  const [type, setType] = useState("all");
   const user = JSON.parse(localStorage.getItem("currentUser"));
+  const { Option } = Select;
   const loadTableData = async (values) => {
     try {
       const response = await axios.get("/api/transactions/all", {
@@ -31,6 +33,7 @@ export default function Home() {
           userId: user._id,
           frequency: frequency,
           ...(frequency === "custom" && { selectedRange }),
+          type: type,
         },
       });
       setIsLoading(false);
@@ -41,8 +44,7 @@ export default function Home() {
   };
   useEffect(() => {
     loadTableData();
-  }, [frequency, selectedRange]);
-  console.log(frequency);
+  }, [frequency, selectedRange, type]);
   const columns = [
     {
       title: "Date",
@@ -66,10 +68,14 @@ export default function Home() {
     <DefaultLayout>
       {isLoading && <Spinner />}
       <div className="filter d-flex justify-content-between align-items-center">
-        <div>
-          <div className="d-flex flex-column">
+        <div className="d-flex justify-content-between align-items-center">
+          <div className="d-flex flex-column" style={{ marginRight: "1rem" }}>
             <h6>Date Filter</h6>
-            <Select value={frequency} onChange={(value) => setFrequency(value)}>
+            <Select
+              value={frequency}
+              onChange={(value) => setFrequency(value)}
+              defaultValue="7"
+            >
               <Select.Option value="7">Last 1 Week</Select.Option>
               <Select.Option value="30">Last 1 Month</Select.Option>
               <Select.Option value="365">Last 1 year</Select.Option>
@@ -83,6 +89,28 @@ export default function Home() {
                 />
               </div>
             )}
+          </div>
+          <div className="d-flex flex-column">
+            <h6>Type Filter</h6>
+            <Select
+              value={type}
+              onChange={(value) => setType(value)}
+              key={type}
+              options={[
+                {
+                  value: "all",
+                  label: "All",
+                },
+                {
+                  value: "expense",
+                  label: "Expense",
+                },
+                {
+                  value: "income",
+                  label: "Income",
+                },
+              ]}
+            ></Select>
           </div>
         </div>
         <div>

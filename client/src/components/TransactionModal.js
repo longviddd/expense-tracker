@@ -20,7 +20,6 @@ function TransactionModal({
       setLoading(false);
       setShowTransactionModal(false);
     } catch (error) {
-      console.log(error);
       message.error("Something went wrong");
       setLoading(false);
     }
