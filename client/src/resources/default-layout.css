@@ -37,3 +37,19 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.toolbar {
+  box-shadow: 0 0 3px gray;
+  padding: 15px 20px;
+  border-radius: 10px;
+}
+.filter {
+  width: 70%;
+  gap: 1rem;
+}
+.table-analytic {
+  width: 100%;
+}
+/* .filter-items {
+  margin-right: 1rem;
+  width: 7.5rem;
+} */

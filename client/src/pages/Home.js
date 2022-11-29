@@ -49,28 +49,32 @@ export default function Home() {
     {
       title: "Date",
       dataIndex: "date",
+      responsive: ["xs"],
       render: (text) => <span>{moment(text).format("YYYY-MM-DD")}</span>,
     },
     {
       title: "Amount",
       dataIndex: "amount",
+      responsive: ["xs"],
     },
     {
       title: "category",
       dataIndex: "category",
+      responsive: ["xs"],
     },
     {
       title: "Reference",
       dataIndex: "reference",
+      responsive: ["xs"],
     },
   ];
   return (
     <DefaultLayout>
       {isLoading && <Spinner />}
-      <div className="filter d-flex justify-content-between align-items-center">
-        <div className="d-flex justify-content-between align-items-center">
-          <div className="d-flex flex-column" style={{ marginRight: "1rem" }}>
-            <h6>Date Filter</h6>
+      <div className="toolbar d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-left align-items-center filter">
+          <div className="d-flex flex-column filter-items">
+            <h6>Date</h6>
             <Select
               value={frequency}
               onChange={(value) => setFrequency(value)}
@@ -90,8 +94,8 @@ export default function Home() {
               </div>
             )}
           </div>
-          <div className="d-flex flex-column">
-            <h6>Type Filter</h6>
+          <div className="d-flex flex-column filter-items">
+            <h6>Type</h6>
             <Select
               value={type}
               onChange={(value) => setType(value)}
