@@ -7,7 +7,9 @@ import {
   Table,
   Tag,
   DatePicker,
+  Button,
 } from "antd";
+import { UnorderedListOutlined, AreaChartOutlined } from "@ant-design/icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import DefaultLayout from "../components/DefaultLayout";
@@ -25,6 +27,7 @@ export default function Home() {
   const [selectedRange, setSelectedRange] = useState([]);
   const [type, setType] = useState("all");
   const user = JSON.parse(localStorage.getItem("currentUser"));
+  const [viewType, setViewType] = useState("table");
   const { Option } = Select;
   const loadTableData = async (values) => {
     try {
@@ -49,23 +52,20 @@ export default function Home() {
     {
       title: "Date",
       dataIndex: "date",
-      responsive: ["xs"],
+
       render: (text) => <span>{moment(text).format("YYYY-MM-DD")}</span>,
     },
     {
       title: "Amount",
       dataIndex: "amount",
-      responsive: ["xs"],
     },
     {
       title: "category",
       dataIndex: "category",
-      responsive: ["xs"],
     },
     {
       title: "Reference",
       dataIndex: "reference",
-      responsive: ["xs"],
     },
   ];
   return (
@@ -117,13 +117,23 @@ export default function Home() {
             ></Select>
           </div>
         </div>
-        <div>
-          <button
-            className="primary"
-            onClick={() => setShowTransactionModal(true)}
-          >
-            ADD NEW
-          </button>
+        <div className="d-flex flex-row justify-content-center align-items-center">
+          <UnorderedListOutlined
+            onClick={() => setViewType("table")}
+            className={`analytic-icons ${
+              viewType === "table" ? "active-icon" : "inactive-icon"
+            }`}
+          />
+
+          <AreaChartOutlined
+            onClick={() => setViewType("analytics")}
+            className={`analytic-icons ${
+              viewType === "analytics" ? "active-icon" : "inactive-icon"
+            }`}
+          />
+          <Button type="primary" onClick={() => setShowTransactionModal(true)}>
+            ADD
+          </Button>
         </div>
       </div>
       <div className="table-analytics">
