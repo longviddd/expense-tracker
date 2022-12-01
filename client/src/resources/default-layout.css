@@ -1,34 +1,34 @@
 .layout {
-  margin: 0 100px;
+  margin: 0 6.25rem;
 }
 .header {
   background-color: #161c51;
-  padding: 20px;
-  border-bottom-right-radius: 25px;
-  border-bottom-left-radius: 25px;
+  padding: 1.25rem;
+  border-bottom-right-radius: 1.5625rem;
+  border-bottom-left-radius: 1.5625rem;
 }
 .logo {
-  font-size: 35px;
+  font-size: 2.1875rem;
   color: rgba(255, 255, 255, 0.716);
   margin: 0 !important;
   cursor: pointer;
 }
 .username {
-  font-size: 18px;
+  font-size: 1.125;
   color: rgba(255, 255, 255, 0.716);
 }
 .content {
   height: 85vh;
-  box-shadow: 0 0 3px gray;
-  margin-top: 20px;
-  border-top-right-radius: 25px;
-  border-top-left-radius: 25px;
-  padding: 15px;
+  box-shadow: 0 0 0.1875rem gray;
+  margin-top: 1.25rem;
+  border-top-right-radius: 1.5625rem;
+  border-top-left-radius: 1.5625rem;
+  padding: 0.9375rem;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 43.75rem) {
   .layout {
-    margin: 0 15px;
+    margin: 0 0.9375rem;
   }
 }
 .spinner {

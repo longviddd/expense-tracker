@@ -9,7 +9,11 @@ import {
   DatePicker,
   Button,
 } from "antd";
-import { UnorderedListOutlined, AreaChartOutlined } from "@ant-design/icons";
+import {
+  UnorderedListOutlined,
+  AreaChartOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import DefaultLayout from "../components/DefaultLayout";
@@ -17,6 +21,7 @@ import Spinner from "../components/Spinner";
 import TransactionModal from "../components/TransactionModal";
 import "../resources/transactions.css";
 import moment from "moment";
+import Analytics from "../components/Analytics";
 
 export default function Home() {
   const { RangePicker } = DatePicker;
@@ -76,6 +81,7 @@ export default function Home() {
           <div className="d-flex flex-column filter-items">
             <h6>Date</h6>
             <Select
+              className="selects"
               value={frequency}
               onChange={(value) => setFrequency(value)}
               defaultValue="7"
@@ -97,6 +103,7 @@ export default function Home() {
           <div className="d-flex flex-column filter-items">
             <h6>Type</h6>
             <Select
+              className="selects"
               value={type}
               onChange={(value) => setType(value)}
               key={type}
@@ -131,15 +138,21 @@ export default function Home() {
               viewType === "analytics" ? "active-icon" : "inactive-icon"
             }`}
           />
-          <Button type="primary" onClick={() => setShowTransactionModal(true)}>
+          <PlusOutlined
+            className="analytic-icons"
+            onClick={() => setShowTransactionModal(true)}
+          >
             ADD
-          </Button>
+          </PlusOutlined>
         </div>
       </div>
       <div className="table-analytics">
-        <div className="table">
-          <Table columns={columns} dataSource={transactionData} />
-        </div>
+        {viewType === "table" && (
+          <div className="table">
+            <Table columns={columns} dataSource={transactionData} />
+          </div>
+        )}
+        {viewType === "analytics" && <Analytics dataSource={transactionData} />}
       </div>
       {showTransactionModal && (
         <TransactionModal
