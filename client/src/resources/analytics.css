@@ -1,4 +1,4 @@
-.transactions-count {
+.transactions-analytics {
   box-shadow: 0 0 0.125rem gray;
   padding: 0.9375rem;
   border-radius: 0.625rem;
@@ -18,4 +18,8 @@
 .progress-bars {
   display: flex;
   justify-content: space-evenly;
+}
+.plus {
+  color: blue;
+  margin-left: 0;
 }

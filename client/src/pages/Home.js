@@ -65,7 +65,7 @@ export default function Home() {
       dataIndex: "amount",
     },
     {
-      title: "category",
+      title: "Category",
       dataIndex: "category",
     },
     {
@@ -139,7 +139,7 @@ export default function Home() {
             }`}
           />
           <PlusOutlined
-            className="analytic-icons"
+            className="analytic-icons plus"
             onClick={() => setShowTransactionModal(true)}
           >
             ADD
