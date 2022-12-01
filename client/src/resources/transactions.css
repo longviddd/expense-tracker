@@ -37,3 +37,7 @@
 .inactive-icon {
   color: gray;
 }
+.plus {
+  color: blue;
+  margin-left: 0;
+}
