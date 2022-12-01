@@ -2,14 +2,42 @@
   color: rgba(0, 0, 0, 0.77) !important;
 }
 .transaction-form input {
-  border: 1px solid gray;
-  border-bottom: 1px solid gray;
+  border: 0.0625rem solid gray;
+  border-bottom: 0.0625rem solid gray;
 }
 .transaction-form input:focus {
-  border: 1px solid gray !important;
-  border-bottom: 1px solid gray;
+  border: 0.0625rem solid gray !important;
+  border-bottom: 0.0625rem solid gray;
 }
 
 .ant-select-selector {
-  border: 1px solid gray !important;
+  border: 0.0625rem solid gray !important;
+}
+.toolbar {
+  box-shadow: 0 0 0.1875rem gray;
+  padding: 0.9375rem 1.25rem;
+  border-radius: 0.625rem;
+}
+.filter {
+  gap: 1rem;
+  flex-grow: 2;
+}
+.table-analytic {
+  width: 100%;
+}
+
+.analytic-icons {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  font-size: 1.5625rem;
+}
+.active-icon {
+  color: black;
+}
+.inactive-icon {
+  color: gray;
+}
+.plus {
+  color: blue;
+  margin-left: 0;
 }

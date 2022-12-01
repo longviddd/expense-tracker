@@ -7,7 +7,13 @@ import {
   Table,
   Tag,
   DatePicker,
+  Button,
 } from "antd";
+import {
+  UnorderedListOutlined,
+  AreaChartOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import DefaultLayout from "../components/DefaultLayout";
@@ -15,6 +21,7 @@ import Spinner from "../components/Spinner";
 import TransactionModal from "../components/TransactionModal";
 import "../resources/transactions.css";
 import moment from "moment";
+import Analytics from "../components/Analytics";
 
 export default function Home() {
   const { RangePicker } = DatePicker;
@@ -25,6 +32,7 @@ export default function Home() {
   const [selectedRange, setSelectedRange] = useState([]);
   const [type, setType] = useState("all");
   const user = JSON.parse(localStorage.getItem("currentUser"));
+  const [viewType, setViewType] = useState("table");
   const { Option } = Select;
   const loadTableData = async (values) => {
     try {
@@ -49,23 +57,20 @@ export default function Home() {
     {
       title: "Date",
       dataIndex: "date",
-      responsive: ["xs"],
+
       render: (text) => <span>{moment(text).format("YYYY-MM-DD")}</span>,
     },
     {
       title: "Amount",
       dataIndex: "amount",
-      responsive: ["xs"],
     },
     {
-      title: "category",
+      title: "Category",
       dataIndex: "category",
-      responsive: ["xs"],
     },
     {
       title: "Reference",
       dataIndex: "reference",
-      responsive: ["xs"],
     },
   ];
   return (
@@ -76,6 +81,7 @@ export default function Home() {
           <div className="d-flex flex-column filter-items">
             <h6>Date</h6>
             <Select
+              className="selects"
               value={frequency}
               onChange={(value) => setFrequency(value)}
               defaultValue="7"
@@ -97,6 +103,7 @@ export default function Home() {
           <div className="d-flex flex-column filter-items">
             <h6>Type</h6>
             <Select
+              className="selects"
               value={type}
               onChange={(value) => setType(value)}
               key={type}
@@ -117,19 +124,35 @@ export default function Home() {
             ></Select>
           </div>
         </div>
-        <div>
-          <button
-            className="primary"
+        <div className="d-flex flex-row justify-content-center align-items-center">
+          <UnorderedListOutlined
+            onClick={() => setViewType("table")}
+            className={`analytic-icons ${
+              viewType === "table" ? "active-icon" : "inactive-icon"
+            }`}
+          />
+
+          <AreaChartOutlined
+            onClick={() => setViewType("analytics")}
+            className={`analytic-icons ${
+              viewType === "analytics" ? "active-icon" : "inactive-icon"
+            }`}
+          />
+          <PlusOutlined
+            className="analytic-icons plus"
             onClick={() => setShowTransactionModal(true)}
           >
-            ADD NEW
-          </button>
+            ADD
+          </PlusOutlined>
         </div>
       </div>
       <div className="table-analytics">
-        <div className="table">
-          <Table columns={columns} dataSource={transactionData} />
-        </div>
+        {viewType === "table" && (
+          <div className="table">
+            <Table columns={columns} dataSource={transactionData} />
+          </div>
+        )}
+        {viewType === "analytics" && <Analytics dataSource={transactionData} />}
       </div>
       {showTransactionModal && (
         <TransactionModal
