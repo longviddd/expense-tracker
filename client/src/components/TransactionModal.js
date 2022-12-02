@@ -1,6 +1,16 @@
-import { Form, Input, message, Modal, Select } from "antd";
+import {
+  Form,
+  Input,
+  message,
+  Modal,
+  Select,
+  Divider,
+  Space,
+  InputRef,
+} from "antd";
 import React, { useState } from "react";
 import axios from "axios";
+
 function TransactionModal({
   showTransactionModal,
   setShowTransactionModal,
@@ -42,15 +52,22 @@ function TransactionModal({
           </Select>
         </Form.Item>
         <Form.Item label="Category" name="category">
-          <Select>
-            <Select.Option value="salary">Salary</Select.Option>
-            <Select.Option value="freelance">Freelance</Select.Option>
-            <Select.Option value="food">Food</Select.Option>
-            <Select.Option value="entertainment">Entertainment</Select.Option>
-            <Select.Option value="education">Education</Select.Option>
-            <Select.Option value="medical">Medical</Select.Option>
-            <Select.Option value="tax">Tax</Select.Option>
-          </Select>
+          <Select
+            dropdownRender={(menu) => (
+              <>
+                {menu}
+                <Divider style={{ margin: "8px 0" }} />
+                <Space style={{ padding: "0 8px 4px" }}>
+                  <Input
+                    placeholder="Please enter item"
+                    ref={inputRef}
+                    value={name}
+                    onChange={onNameChange}
+                  />
+                </Space>
+              </>
+            )}
+          />
         </Form.Item>
         <Form.Item label="Date" name="date">
           <Input type="date" />
