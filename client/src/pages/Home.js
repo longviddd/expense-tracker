@@ -89,6 +89,7 @@ export default function Home() {
               <Select.Option value="7">Last 1 Week</Select.Option>
               <Select.Option value="30">Last 1 Month</Select.Option>
               <Select.Option value="365">Last 1 year</Select.Option>
+              <Select.Option value="all">All time</Select.Option>
               <Select.Option value="custom">Custom</Select.Option>
             </Select>
             {frequency === "custom" && (
