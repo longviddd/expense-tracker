@@ -17,17 +17,21 @@ function TransactionModal({
   setShowTransactionModal,
   loadTableData,
 }) {
-  const onNameChange = (event) => {
-    setCurrentInput(event.target.value);
-  };
   const inputRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
   const [currentInput, setCurrentInput] = useState("");
+  const onNameChange = (event) => {
+    setCurrentInput(event.target.value);
+  };
 
   const addItem = (e) => {
     e.preventDefault();
-    setItems([...items, currentInput]);
+    let newArray = [...items];
+    newArray.push(currentInput);
+    localStorage.setItem("category_items", JSON.stringify(newArray));
+    setItems(items.concat(currentInput));
+
     setCurrentInput("");
     setTimeout(() => {
       inputRef.current?.focus();
@@ -66,9 +70,9 @@ function TransactionModal({
         "Tax",
       ];
       setItems(defaultItems);
-      localStorage.setItem("category_items", defaultItems);
+      localStorage.setItem("category_items", JSON.stringify(defaultItems));
     } else {
-      setItems(localStorage.getItem("category_items"));
+      setItems(JSON.parse(localStorage.getItem("category_items")));
     }
   }, []);
   return (
