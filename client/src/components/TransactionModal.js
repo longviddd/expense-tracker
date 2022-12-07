@@ -6,9 +6,10 @@ import {
   Select,
   Divider,
   Space,
-  InputRef,
+  Button,
 } from "antd";
-import React, { useState } from "react";
+import { PlusOutlined } from "@ant-design/icons";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 
 function TransactionModal({
@@ -16,7 +17,22 @@ function TransactionModal({
   setShowTransactionModal,
   loadTableData,
 }) {
+  const onNameChange = (event) => {
+    setCurrentInput(event.target.value);
+  };
+  const inputRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState([]);
+  const [currentInput, setCurrentInput] = useState("");
+
+  const addItem = (e) => {
+    e.preventDefault();
+    setItems([...items, currentInput]);
+    setCurrentInput("");
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
+  };
   const onFinish = async (values) => {
     try {
       const user = JSON.parse(localStorage.getItem("currentUser"));
@@ -34,6 +50,27 @@ function TransactionModal({
       setLoading(false);
     }
   };
+  useEffect(() => {
+    if (
+      localStorage.getItem("category_items") === null ||
+      localStorage.getItem("category_items").length === 0
+    ) {
+      const defaultItems = [
+        "Salary",
+        "Freelance",
+        "Food",
+        "Entertainment",
+        "Travel",
+        "Education",
+        "Medical",
+        "Tax",
+      ];
+      setItems(defaultItems);
+      localStorage.setItem("category_items", defaultItems);
+    } else {
+      setItems(localStorage.getItem("category_items"));
+    }
+  }, []);
   return (
     <Modal
       title="Add Transaction"
@@ -61,12 +98,19 @@ function TransactionModal({
                   <Input
                     placeholder="Please enter item"
                     ref={inputRef}
-                    value={name}
+                    value={currentInput}
                     onChange={onNameChange}
                   />
+                  <Button type="text" icon={<PlusOutlined />} onClick={addItem}>
+                    Add item
+                  </Button>
                 </Space>
               </>
             )}
+            options={items.map((item) => ({
+              label: item,
+              value: item,
+            }))}
           />
         </Form.Item>
         <Form.Item label="Date" name="date">
