@@ -14,6 +14,7 @@ router.post("/add", async function (req, res) {
 });
 router.get("/all", async function (req, res) {
   const frequency = req.query["frequency"];
+  console.log(frequency);
   const selectedRange = req.query["selectedRange"];
   const type = req.query["type"];
   try {
@@ -22,20 +23,21 @@ router.get("/all", async function (req, res) {
       ...(type !== "all" && {
         type: type,
       }),
-      ...(frequency !== "custom"
-        ? {
-            date: {
-              $gt: moment()
-                .subtract(Number(req.query["frequency"]), "d")
-                .toDate(),
-            },
-          }
-        : {
-            date: {
-              $gte: selectedRange[0],
-              $lte: selectedRange[1],
-            },
-          }),
+      ...(frequency !== "custom" &&
+        frequency !== "all" && {
+          date: {
+            $gt: moment()
+              .subtract(Number(req.query["frequency"]), "d")
+              .toDate(),
+          },
+        }),
+      ...(frequency === "custom" && {
+        date: {
+          $gte: selectedRange[0],
+          $lte: selectedRange[1],
+        },
+      }),
+      ...(frequency === "all" && {}),
     });
     res.send(allTransactions);
   } catch (error) {
