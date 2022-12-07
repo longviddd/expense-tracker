@@ -1,12 +1,43 @@
-import { Form, Input, message, Modal, Select } from "antd";
-import React, { useState } from "react";
+import {
+  Form,
+  Input,
+  message,
+  Modal,
+  Select,
+  Divider,
+  Space,
+  Button,
+} from "antd";
+import { PlusOutlined } from "@ant-design/icons";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import "../resources/modal.css";
+
 function TransactionModal({
   showTransactionModal,
   setShowTransactionModal,
   loadTableData,
 }) {
+  const inputRef = useRef(null);
   const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState([]);
+  const [currentInput, setCurrentInput] = useState("");
+  const onNameChange = (event) => {
+    setCurrentInput(event.target.value);
+  };
+
+  const addItem = (e) => {
+    e.preventDefault();
+    let newArray = [...items];
+    newArray.push(currentInput);
+    localStorage.setItem("category_items", JSON.stringify(newArray));
+    setItems(items.concat(currentInput));
+
+    setCurrentInput("");
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
+  };
   const onFinish = async (values) => {
     try {
       const user = JSON.parse(localStorage.getItem("currentUser"));
@@ -24,6 +55,27 @@ function TransactionModal({
       setLoading(false);
     }
   };
+  useEffect(() => {
+    if (
+      localStorage.getItem("category_items") === null ||
+      localStorage.getItem("category_items").length === 0
+    ) {
+      const defaultItems = [
+        "Salary",
+        "Freelance",
+        "Food",
+        "Entertainment",
+        "Travel",
+        "Education",
+        "Medical",
+        "Tax",
+      ];
+      setItems(defaultItems);
+      localStorage.setItem("category_items", JSON.stringify(defaultItems));
+    } else {
+      setItems(JSON.parse(localStorage.getItem("category_items")));
+    }
+  }, []);
   return (
     <Modal
       title="Add Transaction"
@@ -42,15 +94,35 @@ function TransactionModal({
           </Select>
         </Form.Item>
         <Form.Item label="Category" name="category">
-          <Select>
-            <Select.Option value="salary">Salary</Select.Option>
-            <Select.Option value="freelance">Freelance</Select.Option>
-            <Select.Option value="food">Food</Select.Option>
-            <Select.Option value="entertainment">Entertainment</Select.Option>
-            <Select.Option value="education">Education</Select.Option>
-            <Select.Option value="medical">Medical</Select.Option>
-            <Select.Option value="tax">Tax</Select.Option>
-          </Select>
+          <Select
+            dropdownRender={(menu) => (
+              <>
+                {menu}
+                <Divider style={{ margin: "8px 0" }} />
+                <div className="input-space">
+                  <Input
+                    className="category-input"
+                    placeholder="Please enter item"
+                    ref={inputRef}
+                    value={currentInput}
+                    onChange={onNameChange}
+                  />
+                  <Button
+                    type="text"
+                    className="add-button"
+                    icon={<PlusOutlined />}
+                    onClick={addItem}
+                  >
+                    Add item
+                  </Button>
+                </div>
+              </>
+            )}
+            options={items.map((item) => ({
+              label: item,
+              value: item,
+            }))}
+          />
         </Form.Item>
         <Form.Item label="Date" name="date">
           <Input type="date" />

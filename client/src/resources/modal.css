@@ -1,0 +1,13 @@
+.category-input {
+  width: 60%;
+}
+.add-button {
+  width: 25%;
+}
+.input-space {
+  padding: "0 8px 4px";
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+  width: 100%;
+}
