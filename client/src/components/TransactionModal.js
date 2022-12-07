@@ -11,6 +11,7 @@ import {
 import { PlusOutlined } from "@ant-design/icons";
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import "../resources/modal.css";
 
 function TransactionModal({
   showTransactionModal,
@@ -98,17 +99,23 @@ function TransactionModal({
               <>
                 {menu}
                 <Divider style={{ margin: "8px 0" }} />
-                <Space style={{ padding: "0 8px 4px" }}>
+                <div className="input-space">
                   <Input
+                    className="category-input"
                     placeholder="Please enter item"
                     ref={inputRef}
                     value={currentInput}
                     onChange={onNameChange}
                   />
-                  <Button type="text" icon={<PlusOutlined />} onClick={addItem}>
+                  <Button
+                    type="text"
+                    className="add-button"
+                    icon={<PlusOutlined />}
+                    onClick={addItem}
+                  >
                     Add item
                   </Button>
-                </Space>
+                </div>
               </>
             )}
             options={items.map((item) => ({
