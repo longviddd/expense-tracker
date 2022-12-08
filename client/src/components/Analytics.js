@@ -23,6 +23,22 @@ function Analytics({ dataSource }) {
 
   let totalIncomeTurnover = 0;
   let totalExpenseTurnover = 0;
+  let categories = [];
+  let expenseCategories = [
+    ...new Set(
+      allExpenseTransactions
+        .sort((a, b) => b.amount - a.amount)
+        .map((trans) => trans.category)
+    ),
+  ];
+  let incomeCategories = [
+    ...new Set(
+      allIncomeTransactions
+        .sort((a, b) => b.amount - a.amount)
+        .map((trans) => trans.category)
+    ),
+  ];
+
   for (let i = 0; i < allIncomeTransactions.length; i++) {
     totalIncomeTurnover += allIncomeTransactions[i].amount;
   }
@@ -85,6 +101,60 @@ function Analytics({ dataSource }) {
                 percent={totalExpenseTurnoverPercentage.toFixed(0)}
               />
             </div>
+          </div>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col">
+          <div className="income-analysis">
+            <h4>Income - Category Analysis</h4>
+            <hr />
+            {incomeCategories.map((category) => {
+              let amount = dataSource
+                .filter((t) => t.type === "income" && t.category === category)
+                .reduce((acc, t) => acc + t.amount, 0);
+              return (
+                amount > 0 && (
+                  <div>
+                    <div className="category-card">
+                      <h5>{category}</h5>
+                      <Progress
+                        percent={((amount / totalIncomeTurnover) * 100).toFixed(
+                          0
+                        )}
+                      />
+                    </div>
+                  </div>
+                )
+              );
+            })}
+          </div>
+        </div>
+        <div className="col">
+          <div className="expense-analysis">
+            <h4>Expense - Category Analysis</h4>
+            <hr />
+            {expenseCategories.map((category) => {
+              let amount = dataSource
+                .filter((t) => t.type === "expense" && t.category === category)
+                .reduce((acc, t) => acc + t.amount, 0);
+              return (
+                amount > 0 && (
+                  <div>
+                    <div className="category-card">
+                      <h5>{category}</h5>
+                      <Progress
+                        strokeColor={"red"}
+                        percent={(
+                          (amount / totalExpenseTurnover) *
+                          100
+                        ).toFixed(0)}
+                      />
+                    </div>
+                  </div>
+                )
+              );
+            })}
           </div>
         </div>
       </div>
