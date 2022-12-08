@@ -9,6 +9,7 @@ import {
   Button,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import moment from "moment";
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "../resources/modal.css";
@@ -17,7 +18,10 @@ function TransactionModal({
   showTransactionModal,
   setShowTransactionModal,
   loadTableData,
+  selectedEditItem,
 }) {
+  selectedEditItem.date = moment(selectedEditItem.date).format("YYYY-MM-DD");
+
   const inputRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
@@ -77,12 +81,17 @@ function TransactionModal({
   }, []);
   return (
     <Modal
-      title="Add Transaction"
+      title={selectedEditItem ? "Edit Transaction" : "Add Transaction"}
       visible={showTransactionModal}
       onCancel={() => setShowTransactionModal(false)}
       footer={false}
     >
-      <Form layout="vertical" className="transaction-form" onFinish={onFinish}>
+      <Form
+        initialValues={selectedEditItem}
+        layout="vertical"
+        className="transaction-form"
+        onFinish={onFinish}
+      >
         <Form.Item label="Amount" name="amount">
           <Input type="text" />
         </Form.Item>

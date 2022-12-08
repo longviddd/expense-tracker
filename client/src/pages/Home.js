@@ -27,6 +27,7 @@ import Analytics from "../components/Analytics";
 
 export default function Home() {
   const { RangePicker } = DatePicker;
+  const [selectedEditItem, setSelectedEditItem] = useState(null);
   const [transactionData, setTransactionData] = useState([]);
   const [showTransactionModal, setShowTransactionModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -80,7 +81,13 @@ export default function Home() {
       render: (text, record) => {
         return (
           <div>
-            <EditOutlined className="action-icons" />
+            <EditOutlined
+              className="action-icons"
+              onClick={() => {
+                setSelectedEditItem(record);
+                setShowTransactionModal(true);
+              }}
+            />
             <DeleteOutlined className="action-icons" />
           </div>
         );
@@ -155,7 +162,10 @@ export default function Home() {
           />
           <PlusOutlined
             className="analytic-icons plus"
-            onClick={() => setShowTransactionModal(true)}
+            onClick={() => {
+              setShowTransactionModal(true);
+              setSelectedEditItem(null);
+            }}
           >
             ADD
           </PlusOutlined>
@@ -174,6 +184,7 @@ export default function Home() {
           showTransactionModal={showTransactionModal}
           setShowTransactionModal={setShowTransactionModal}
           loadTableData={loadTableData}
+          selectedEditItem={selectedEditItem}
         />
       )}
     </DefaultLayout>
