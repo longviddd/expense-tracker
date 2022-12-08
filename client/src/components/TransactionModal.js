@@ -62,7 +62,6 @@ function TransactionModal({
     ) {
       const defaultItems = [
         "Salary",
-        "Freelance",
         "Food",
         "Entertainment",
         "Travel",

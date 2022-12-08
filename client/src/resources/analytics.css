@@ -19,4 +19,12 @@
   display: flex;
   justify-content: space-evenly;
 }
-
+.income-analysis,
+.expense-analysis {
+  box-shadow: 0 0 0.125rem gray;
+  padding: 0.9375rem;
+  border-radius: 0.625rem;
+  margin-top: 1rem;
+  color: rgb(56, 55, 55) !important;
+  min-height: 200px;
+}

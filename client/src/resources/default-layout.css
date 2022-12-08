@@ -19,6 +19,7 @@
 }
 .content {
   height: 85vh;
+  overflow-y: auto;
   box-shadow: 0 0 0.1875rem gray;
   margin-top: 1.25rem;
   border-top-right-radius: 1.5625rem;
