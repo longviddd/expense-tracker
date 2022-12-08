@@ -13,6 +13,8 @@ import {
   UnorderedListOutlined,
   AreaChartOutlined,
   PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -25,6 +27,7 @@ import Analytics from "../components/Analytics";
 
 export default function Home() {
   const { RangePicker } = DatePicker;
+  const [selectedEditItem, setSelectedEditItem] = useState(null);
   const [transactionData, setTransactionData] = useState([]);
   const [showTransactionModal, setShowTransactionModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +37,17 @@ export default function Home() {
   const user = JSON.parse(localStorage.getItem("currentUser"));
   const [viewType, setViewType] = useState("table");
   const { Option } = Select;
+  const deleteTransaction = async (_id) => {
+    try {
+      setIsLoading(true);
+      await axios.delete("/api/transactions/delete", { data: { _id: _id } });
+      setIsLoading(false);
+      loadTableData();
+    } catch (error) {
+      setIsLoading(false);
+      message.error(error);
+    }
+  };
   const loadTableData = async (values) => {
     try {
       const response = await axios.get("/api/transactions/all", {
@@ -72,7 +86,31 @@ export default function Home() {
       title: "Reference",
       dataIndex: "reference",
     },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      render: (text, record) => {
+        return (
+          <div>
+            <EditOutlined
+              className="action-icons"
+              onClick={() => {
+                setSelectedEditItem(record);
+                setShowTransactionModal(true);
+              }}
+            />
+            <DeleteOutlined
+              className="action-icons"
+              onClick={() => {
+                deleteTransaction(record._id);
+              }}
+            />
+          </div>
+        );
+      },
+    },
   ];
+
   return (
     <DefaultLayout>
       {isLoading && <Spinner />}
@@ -141,7 +179,10 @@ export default function Home() {
           />
           <PlusOutlined
             className="analytic-icons plus"
-            onClick={() => setShowTransactionModal(true)}
+            onClick={() => {
+              setShowTransactionModal(true);
+              setSelectedEditItem(null);
+            }}
           >
             ADD
           </PlusOutlined>
@@ -160,6 +201,7 @@ export default function Home() {
           showTransactionModal={showTransactionModal}
           setShowTransactionModal={setShowTransactionModal}
           loadTableData={loadTableData}
+          selectedEditItem={selectedEditItem}
         />
       )}
     </DefaultLayout>

@@ -9,15 +9,22 @@ import {
   Button,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import moment from "moment";
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "../resources/modal.css";
+import Spinner from "./Spinner";
 
 function TransactionModal({
   showTransactionModal,
   setShowTransactionModal,
   loadTableData,
+  selectedEditItem,
 }) {
+  if (selectedEditItem !== null) {
+    selectedEditItem.date = moment(selectedEditItem.date).format("YYYY-MM-DD");
+  }
+
   const inputRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState([]);
@@ -42,11 +49,20 @@ function TransactionModal({
     try {
       const user = JSON.parse(localStorage.getItem("currentUser"));
       setLoading(true);
-      await axios.post("/api/transactions/add", {
-        ...values,
-        userId: user._id,
-      });
-      message.success("Transaction added");
+      if (selectedEditItem !== null) {
+        await axios.put("/api/transactions/edit", {
+          ...values,
+          userId: user._id,
+          _id: selectedEditItem._id,
+        });
+        message.success("Transaction Edited");
+      } else {
+        await axios.post("/api/transactions/add", {
+          ...values,
+          userId: user._id,
+        });
+        message.success("Transaction added");
+      }
       loadTableData();
       setLoading(false);
       setShowTransactionModal(false);
@@ -77,12 +93,18 @@ function TransactionModal({
   }, []);
   return (
     <Modal
-      title="Add Transaction"
+      title={selectedEditItem ? "Edit Transaction" : "Add Transaction"}
       visible={showTransactionModal}
       onCancel={() => setShowTransactionModal(false)}
       footer={false}
     >
-      <Form layout="vertical" className="transaction-form" onFinish={onFinish}>
+      {loading && <Spinner />}
+      <Form
+        initialValues={selectedEditItem}
+        layout="vertical"
+        className="transaction-form"
+        onFinish={onFinish}
+      >
         <Form.Item label="Amount" name="amount">
           <Input type="text" />
         </Form.Item>
