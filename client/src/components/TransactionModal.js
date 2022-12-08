@@ -13,6 +13,7 @@ import moment from "moment";
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import "../resources/modal.css";
+import Spinner from "./Spinner";
 
 function TransactionModal({
   showTransactionModal,
@@ -97,6 +98,7 @@ function TransactionModal({
       onCancel={() => setShowTransactionModal(false)}
       footer={false}
     >
+      {loading && <Spinner />}
       <Form
         initialValues={selectedEditItem}
         layout="vertical"
