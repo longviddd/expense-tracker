@@ -12,9 +12,24 @@ router.post("/add", async function (req, res) {
     res.status(500).json(error);
   }
 });
+router.delete("/delete", async function (req, res) {
+  try {
+    await Transaction.findOneAndDelete({ _id: req.body._id });
+    res.send("Transaction deleted successfully");
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+router.put("/edit", async function (req, res) {
+  try {
+    await Transaction.findOneAndUpdate({ _id: req.body._id }, req.body);
+    res.send("Transaction updated successfully");
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
 router.get("/all", async function (req, res) {
   const frequency = req.query["frequency"];
-  console.log(frequency);
   const selectedRange = req.query["selectedRange"];
   const type = req.query["type"];
   try {

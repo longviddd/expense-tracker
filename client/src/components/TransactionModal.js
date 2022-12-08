@@ -20,7 +20,9 @@ function TransactionModal({
   loadTableData,
   selectedEditItem,
 }) {
-  selectedEditItem.date = moment(selectedEditItem.date).format("YYYY-MM-DD");
+  if (selectedEditItem !== null) {
+    selectedEditItem.date = moment(selectedEditItem.date).format("YYYY-MM-DD");
+  }
 
   const inputRef = useRef(null);
   const [loading, setLoading] = useState(false);
@@ -46,11 +48,20 @@ function TransactionModal({
     try {
       const user = JSON.parse(localStorage.getItem("currentUser"));
       setLoading(true);
-      await axios.post("/api/transactions/add", {
-        ...values,
-        userId: user._id,
-      });
-      message.success("Transaction added");
+      if (selectedEditItem !== null) {
+        await axios.put("/api/transactions/edit", {
+          ...values,
+          userId: user._id,
+          _id: selectedEditItem._id,
+        });
+        message.success("Transaction Edited");
+      } else {
+        await axios.post("/api/transactions/add", {
+          ...values,
+          userId: user._id,
+        });
+        message.success("Transaction added");
+      }
       loadTableData();
       setLoading(false);
       setShowTransactionModal(false);

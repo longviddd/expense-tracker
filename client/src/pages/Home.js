@@ -37,6 +37,17 @@ export default function Home() {
   const user = JSON.parse(localStorage.getItem("currentUser"));
   const [viewType, setViewType] = useState("table");
   const { Option } = Select;
+  const deleteTransaction = async (_id) => {
+    try {
+      setIsLoading(true);
+      await axios.delete("/api/transactions/delete", { data: { _id: _id } });
+      setIsLoading(false);
+      loadTableData();
+    } catch (error) {
+      setIsLoading(false);
+      message.error(error);
+    }
+  };
   const loadTableData = async (values) => {
     try {
       const response = await axios.get("/api/transactions/all", {
@@ -88,12 +99,18 @@ export default function Home() {
                 setShowTransactionModal(true);
               }}
             />
-            <DeleteOutlined className="action-icons" />
+            <DeleteOutlined
+              className="action-icons"
+              onClick={() => {
+                deleteTransaction(record._id);
+              }}
+            />
           </div>
         );
       },
     },
   ];
+
   return (
     <DefaultLayout>
       {isLoading && <Spinner />}
