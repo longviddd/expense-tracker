@@ -13,6 +13,8 @@ import {
   UnorderedListOutlined,
   AreaChartOutlined,
   PlusOutlined,
+  EditOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -71,6 +73,18 @@ export default function Home() {
     {
       title: "Reference",
       dataIndex: "reference",
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      render: (text, record) => {
+        return (
+          <div>
+            <EditOutlined className="action-icons" />
+            <DeleteOutlined className="action-icons" />
+          </div>
+        );
+      },
     },
   ];
   return (
