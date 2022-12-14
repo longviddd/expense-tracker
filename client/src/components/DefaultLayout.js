@@ -7,25 +7,27 @@ import {
   UnorderedListOutlined,
   MoneyCollectOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
-function getItem(label, key, icon, children) {
-  return {
-    key,
-    icon,
-    children,
-    label,
-  };
-}
-const items = [
-  getItem("User", "sub1", <UserOutlined />, [getItem("Logout", "logout")]),
-  getItem("All Transactions", "table", <UnorderedListOutlined />),
-  getItem("Budget", "budget", <MoneyCollectOutlined />),
-  getItem("Analytic", "analytic", <PieChartOutlined />),
-];
-const { Header, Content, Footer, Sider } = Layout;
+import { useNavigate, useNavigation } from "react-router-dom";
+
 function DefaultLayout(props) {
   const user = JSON.parse(localStorage.getItem("currentUser"));
   const navigate = useNavigate();
+
+  function getItem(label, key, icon, children) {
+    return {
+      key,
+      icon,
+      children,
+      label,
+    };
+  }
+  const items = [
+    getItem("User", "sub1", <UserOutlined />, [getItem("Logout", "logout")]),
+    getItem("All Transactions", "table", <UnorderedListOutlined />),
+    getItem("Budget", "budget", <MoneyCollectOutlined />),
+    getItem("Analytic", "analytic", <PieChartOutlined />),
+  ];
+  const { Header, Content, Footer, Sider } = Layout;
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
